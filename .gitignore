@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore Spring Boot profile files with sensitive credentials
+application-dev.properties
