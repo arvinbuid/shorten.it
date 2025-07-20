@@ -1,5 +1,6 @@
 package com.url.shorten.it.controllers;
 
+import com.url.shorten.it.dto.LoginRequestDTO;
 import com.url.shorten.it.dto.RegisterRequestDTO;
 import com.url.shorten.it.models.User;
 import com.url.shorten.it.service.UserService;
@@ -17,6 +18,11 @@ public class AuthController {
 
     public AuthController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping("/public/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO loginRequest) {
+        return ResponseEntity.ok(userService.authenticateUser(loginRequest));
     }
 
     @PostMapping("/public/register")
