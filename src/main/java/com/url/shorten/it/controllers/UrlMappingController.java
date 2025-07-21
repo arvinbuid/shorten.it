@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -47,8 +49,11 @@ public class UrlMappingController {
                                                                @RequestParam("startDate") String startDate,
                                                                @RequestParam("endDate") String endDate
                                                                ) {
-
+        // 2025-07-21T00:00:00
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME;
+        var start = LocalDateTime.parse(startDate, dateTimeFormatter);
+        var end = LocalDateTime.parse(endDate, dateTimeFormatter);
+        List<ClickEventDTO> clickEventDTOs = urlMappingService.getClickEventsByDate(shortUrl, start, end);
+        return ResponseEntity.ok(clickEventDTOs);
     }
-
-
 }

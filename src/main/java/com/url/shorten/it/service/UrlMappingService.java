@@ -1,8 +1,10 @@
 package com.url.shorten.it.service;
 
+import com.url.shorten.it.dto.ClickEventDTO;
 import com.url.shorten.it.dto.UrlMappingDTO;
 import com.url.shorten.it.models.UrlMapping;
 import com.url.shorten.it.models.User;
+import com.url.shorten.it.repository.ClickEventRepository;
 import com.url.shorten.it.repository.UrlMappingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,11 +12,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UrlMappingService {
     private UrlMappingRepository urlMappingRepository;
+    private ClickEventRepository clickEventRepository;
 
     public UrlMappingDTO createShortUrl(String originalUrl, User user) {
         String shortUrl = generateShortUrl();
@@ -55,5 +59,25 @@ public class UrlMappingService {
                 .stream()
                 .map(this::convertToDto) // user own method of this class to convert every item into DTO
                 .toList();
+    }
+
+    public List<ClickEventDTO> getClickEventsByDate(String shortUrl, LocalDateTime start, LocalDateTime end) {
+        UrlMapping urlMapping = urlMappingRepository.findByShortUrl(shortUrl);
+
+        if (urlMapping != null) {
+            // Convert into stream -> group data by clickDate -> transform data into list of ClickEventDTO
+            return clickEventRepository.findByUrlMappingAndClickDateBetween(urlMapping, start, end)
+                    .stream()
+                    .collect(Collectors.groupingBy(click -> click.getClickDate().toLocalDate(), Collectors.counting()))
+                    .entrySet().stream()
+                    .map(entry -> {
+                        ClickEventDTO clickEventDTO = new ClickEventDTO();
+                        clickEventDTO.setClickDate(entry.getKey());
+                        clickEventDTO.setCount(entry.getValue());
+                        return clickEventDTO;
+                    })
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }
