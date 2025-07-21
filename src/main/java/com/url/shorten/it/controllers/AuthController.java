@@ -31,7 +31,7 @@ public class AuthController {
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
-        user.setRole("USER_ROLE");
+        user.setRole("ROLE_USER");
 
         userService.registerUser(user);
         return ResponseEntity.ok("User created successfully.");
