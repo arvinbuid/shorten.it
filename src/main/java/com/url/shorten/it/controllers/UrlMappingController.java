@@ -1,5 +1,6 @@
 package com.url.shorten.it.controllers;
 
+import com.url.shorten.it.dto.ClickEventDTO;
 import com.url.shorten.it.dto.UrlMappingDTO;
 import com.url.shorten.it.models.User;
 import com.url.shorten.it.service.UrlMappingService;
@@ -39,4 +40,15 @@ public class UrlMappingController {
         List<UrlMappingDTO> urls = urlMappingService.getUrlsByUser(user);
         return ResponseEntity.ok(urls);
     }
+
+    @GetMapping("/analytics/{shortUrl}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<ClickEventDTO>> getUrlAnalytics(@PathVariable String shortUrl,
+                                                               @RequestParam("startDate") String startDate,
+                                                               @RequestParam("endDate") String endDate
+                                                               ) {
+
+    }
+
+
 }
