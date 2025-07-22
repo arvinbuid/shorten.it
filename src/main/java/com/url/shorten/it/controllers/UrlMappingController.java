@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -55,5 +56,19 @@ public class UrlMappingController {
         var end = LocalDateTime.parse(endDate, dateTimeFormatter);
         List<ClickEventDTO> clickEventDTOs = urlMappingService.getClickEventsByDate(shortUrl, start, end);
         return ResponseEntity.ok(clickEventDTOs);
+    }
+
+    @GetMapping("/totalClicks")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Map<LocalDate, Long>> getTotalClicksByDate(Principal principal,
+                                                               @RequestParam("startDate") String startDate,
+                                                               @RequestParam("endDate") String endDate
+                                                               ) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
+        User user = userService.findByUsername(principal.getName());
+        var start = LocalDate.parse(startDate, dateTimeFormatter);
+        var end = LocalDate.parse(endDate, dateTimeFormatter);
+        Map<LocalDate, Long> totalClicks = urlMappingService.getTotalClicksByUserAndDate(user, start, end);
+        return ResponseEntity.ok(totalClicks);
     }
 }
