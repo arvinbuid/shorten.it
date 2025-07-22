@@ -1,7 +1,17 @@
+import About from "./components/About"
+import LandingPage from "./components/LandingPage"
+
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+
 function App() {
   return (
     <>
-      <h1>Shorten.it</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
