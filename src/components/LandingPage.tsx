@@ -25,7 +25,7 @@ const LandingPage = () => {
             <div className="flex-col lg:flex-row py-0 lg:py-5 pt-4 md:pt-16 gap-8 lg:gap-10 flex justify-between items-center mt-12 mb-24">
                 <div className="flex-none w-full lg:flex-1 ml-0 xl:ml-12">
                     <h1 className="font-bold text-slate-800 text-3xl sm:text:4xl md:text-5xl leading sm:leading-[40px] md:leading-[55px] md:w-3/4 lg:w-full">
-                        Shorten.it Simplifies URL Shortening For Efficient Sharing.
+                        Shorten.it simplifies url shortening for efficient link sharing.
                     </h1>
                     <p className="text-slate-700 text-sm my-6">
                         Shorten.it streamlines the process of URL shortening, making sharing
