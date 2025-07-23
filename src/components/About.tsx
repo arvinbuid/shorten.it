@@ -4,9 +4,9 @@ const About = () => {
     return (
         <section className="px-5 sm:px-8 lg:px-14 min-h-[calc(100vh-64px)] pt-6">
             <div className="bg-white px-3 md:px-6 py-8 sm:py-10">
-                <h1 className="text-slate-800 text-3xl sm:text-4xl font-bold italic w-max mb-3">About Shorten.io</h1>
+                <h1 className="text-slate-800 text-3xl sm:text-4xl font-bold italic w-max mb-3">About Shorten.it</h1>
                 <p className="text-gray-700 text-sm  mb-8 xl:w-[60%] lg:w-[70%] sm:w-[80%] w-full">
-                    Shorten.io simplifies URL shortening for efficient sharing. Easily
+                    Shorten.it simplifies URL shortening for efficient sharing. Easily
                     generate, manage, and track your shortened links. It simplifies
                     URL shortening for efficient sharing. Easily generate, manage, and
                     track your shortened links.

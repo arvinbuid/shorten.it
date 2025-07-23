@@ -11,7 +11,7 @@ const Navbar = () => {
             <div className="lg:px-14 sm:px-8 px-4 w-full flex justify-between">
                 <Link to="/">
                     <h1 className="font-bold text-3xl text-white italic sm:mt-0 mt-2">
-                        Linklytics
+                        Shorten.it
                     </h1>
                 </Link>
                 <ul
