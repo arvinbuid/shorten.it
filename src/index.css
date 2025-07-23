@@ -1,22 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
 
+:root {
+  font-family: "Inter", sans-serif;
+}
+
 @theme {
   --color-navbarColor: #ffffff;
   --color-btnColor: #3364f7;
   --color-linkColor: #2a5bd7;
   --shadow-custom: 0 0 15px rgba(0, 0, 0, 0.3);
   --shadow-right: 10px 0px 10px -5px rgba(0, 0, 0, 0.3);
-  --font-inter: "Inter", sans-serif;
 }
 
-@utility bg-custom-gradient {
-  background-image: linear-gradient(to right, #3b82f6, #9333ea);
-}
-
-@utility bg-custom-gradient-2 {
-  background-image: linear-gradient(to left, #3b82f6, #f43f5e);
-}
-@utility bg-card-gradient {
-  background-image: linear-gradient(to right, #38b2ac, #4299e1);
+@layer utilities {
+  .bg-custom-gradient {
+    background-image: linear-gradient(to right, #3b82f6, #9333ea);
+  }
+  .bg-custom-gradient-2 {
+    background-image: linear-gradient(to left, #3b82f6, #f43f5e);
+  }
+  .bg-card-gradient {
+    background-image: linear-gradient(to right, #38b2ac, #4299e1);
+  }
 }
