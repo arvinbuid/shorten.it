@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -11,6 +12,7 @@
   --color-linkColor: #2a5bd7;
   --shadow-custom: 0 0 15px rgba(0, 0, 0, 0.3);
   --shadow-right: 10px 0px 10px -5px rgba(0, 0, 0, 0.3);
+  --font-raleway: "Raleway", sans-serif;
 }
 
 @layer utilities {

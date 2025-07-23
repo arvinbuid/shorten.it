@@ -10,7 +10,7 @@ const Navbar = () => {
         <div className="h-16 bg-custom-gradient  z-50 flex items-center sticky top-0 ">
             <div className="lg:px-14 sm:px-8 px-4 w-full flex justify-between">
                 <Link to="/">
-                    <h1 className="font-bold text-3xl text-white italic sm:mt-0 mt-2">
+                    <h1 className="font-bold text-3xl text-white font-raleway">
                         Shorten.it
                     </h1>
                 </Link>
