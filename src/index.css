@@ -24,3 +24,10 @@
     background-image: linear-gradient(to right, #38b2ac, #4299e1);
   }
 }
+
+@layer base {
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}
