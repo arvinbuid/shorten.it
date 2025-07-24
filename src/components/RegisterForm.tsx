@@ -15,7 +15,14 @@ interface RegisterFormFields extends FieldValues {
 const REGISTER_URL = "/api/auth/public/register";
 
 const RegisterForm = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormFields>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormFields>({
+        defaultValues: {
+            username: "",
+            email: "",
+            password: "",
+        },
+        mode: "onTouched"
+    });
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
