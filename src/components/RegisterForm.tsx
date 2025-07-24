@@ -1,8 +1,9 @@
 import { useForm, type FieldValues } from "react-hook-form";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import TextField from "./TextField";
+import api from "../api/api";
 
 interface RegisterFormFields extends FieldValues {
     username: string;
@@ -10,12 +11,25 @@ interface RegisterFormFields extends FieldValues {
     password: string;
 }
 
+const REGISTER_URL = "/api/auth/public/register";
+
 const RegisterForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormFields>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormFields>();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
-    const registerHandler = (data: RegisterFormFields) => {
-        console.log(data)
+    const registerHandler = async (data: RegisterFormFields) => {
+        try {
+            setLoading(true);
+            const { data: response } = await api.post(REGISTER_URL, data);
+            reset();
+            navigate("/login");
+            console.log(response);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
     }
     return (
         <div className="min-h-[calc(100vh-64px)] flex justify-center items-center">
