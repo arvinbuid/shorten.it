@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import TextField from "./TextField";
 import api from "../api/api";
+import toast from "react-hot-toast";
 
 interface RegisterFormFields extends FieldValues {
     username: string;
@@ -24,9 +25,11 @@ const RegisterForm = () => {
             const { data: response } = await api.post(REGISTER_URL, data);
             reset();
             navigate("/login");
-            console.log(response);
+            toast.success("Registration successful!");
+            console.log(response)
         } catch (e) {
             console.error(e);
+            toast.error("Error registering user.");
         } finally {
             setLoading(false);
         }
