@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 import RegisterForm from "./components/RegisterForm"
 import Login from "./components/Login"
+import DashboardLayout from "./components/dashboard/DashboardLayout"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<DashboardLayout />} />
         </Routes>
         <Footer />
       </Router>

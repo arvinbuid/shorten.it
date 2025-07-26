@@ -29,7 +29,7 @@ const Login = () => {
             const { data: response } = await api.post(LOGIN_URL, data);
             localStorage.setItem("JWT_TOKEN", JSON.stringify(response.token)); // store token in local storage
             reset();
-            navigate("/");
+            navigate("/dashboard");
             toast.success("Login successful!");
         } catch (e) {
             console.error(e);
