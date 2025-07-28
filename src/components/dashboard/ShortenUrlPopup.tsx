@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 
 import Modal from '@mui/material/Modal';
+import CreateNewShortenUrl from './CreateNewShortenUrl';
 
 interface ShortenUrlPopupProps {
     open: boolean;
@@ -23,7 +24,7 @@ const ShortenUrlPopup = ({ open, setOpen, refetch }: ShortenUrlPopupProps) => {
             aria-describedby="modal-modal-description"
         >
             <div className="flex justify-center items-center w-full h-full">
-                {/* Modal UI */}
+                <CreateNewShortenUrl setOpen={setOpen} refetch={refetch} />
             </div>
         </Modal>
     );
