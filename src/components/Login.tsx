@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useJwt } from "../context/useJwtContext";
+
 import toast from "react-hot-toast";
 import api from "../api/api";
-import { Link, useNavigate } from "react-router-dom";
 import TextField from "./TextField";
 
 interface LoginFormFields extends FieldValues {
@@ -20,13 +22,15 @@ const Login = () => {
         },
         mode: "onTouched"
     });
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const { setToken } = useJwt();
 
     const loginHandler = async (data: LoginFormFields) => {
         try {
             setLoading(true);
             const { data: response } = await api.post(LOGIN_URL, data);
+            setToken(response.token);
             localStorage.setItem("JWT_TOKEN", JSON.stringify(response.token)); // store token in local storage
             reset();
             navigate("/dashboard");
