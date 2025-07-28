@@ -6,8 +6,9 @@ interface JwtProviderProps {
 }
 
 export const JwtProvider = ({ children }: JwtProviderProps) => {
-    const storedToken = localStorage.getItem("JWT_TOKEN") ? JSON.parse(localStorage.getItem("JWT_TOKEN")!) : null;
-    const [token, setToken] = useState(storedToken);
+    const rawToken = localStorage.getItem("JWT_TOKEN");
+    const storedToken = rawToken ? JSON.parse(rawToken) : null;
+    const [token, setToken] = useState<string | null>(storedToken);
 
     return <JwtContext.Provider value={{ token, setToken }}>
         {children}
