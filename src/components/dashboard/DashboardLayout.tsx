@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useJwt } from "../../context/useJwtContext";
 import { useFetchTotalClicks } from "../../hooks/useQuery";
 import Graph from "./Graph";
+import ShortenUrlPopup from "./ShortenUrlPopup";
 
 const DashboardLayout = () => {
     const { token } = useJwt();
     const { isLoading, data: totalClicks } = useFetchTotalClicks(token);
+    const [shortenUrlPopup, setShortenUrlPopup] = useState(false);
+    const refetch = false;
 
     if (isLoading) {
         return (
@@ -42,9 +46,17 @@ const DashboardLayout = () => {
                 </div>
                 {/* Create New URL Button */}
                 <div className="text-[12px] text-center sm:text-end py-6">
-                    <button className="bg-custom-gradient text-white rounded-md py-2 px-4">Create new Short URL</button>
+                    <button
+                        onClick={() => setShortenUrlPopup(true)}
+                        className="bg-custom-gradient text-white rounded-md py-2 px-4">Create new Short URL</button>
                 </div>
             </div>
+
+            <ShortenUrlPopup
+                open={shortenUrlPopup}
+                setOpen={setShortenUrlPopup}
+                refetch={refetch}
+            />
         </div>
     );
 }
