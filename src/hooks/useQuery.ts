@@ -12,7 +12,7 @@ interface TransformedGraphData {
   count: number;
 }
 
-interface ShortenedUrlItem {
+export interface ShortenedUrlItem {
   id: number;
   originalUrl: string;
   shortUrl: string;

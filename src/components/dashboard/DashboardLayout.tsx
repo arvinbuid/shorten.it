@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useJwt } from "../../context/useJwtContext";
 import { useFetchShortenUrls, useFetchTotalClicks } from "../../hooks/useQuery";
+import { FaLink } from "react-icons/fa";
 import Graph from "./Graph";
 import ShortenUrlPopup from "./ShortenUrlPopup";
+import ShortenUrlLinks from "./ShortenUrlLinks";
 
 const DashboardLayout = () => {
     const { token } = useJwt();
@@ -10,7 +12,7 @@ const DashboardLayout = () => {
     const { isLoading, data: totalClicks } = useFetchTotalClicks(token);
     const { isLoading: shortenUrlsLoading, data: shortenUrls, refetch } = useFetchShortenUrls(token);
 
-    if (isLoading) {
+    if (isLoading || shortenUrlsLoading) {
         return (
             <div className="min-h-[calc(100vh-64px)] flex items-center justify-center">
                 <p>Loading graph data...</p>
@@ -50,6 +52,18 @@ const DashboardLayout = () => {
                         onClick={() => setShortenUrlPopup(true)}
                         className="bg-custom-gradient text-white rounded-md py-2 px-4">Create new Short URL</button>
                 </div>
+
+                {/* Short Urls UI */}
+                {shortenUrls && shortenUrls.length > 0 ? (
+                    <ShortenUrlLinks data={shortenUrls} />
+                ) : (
+                    <div className="flex justify-center pt-12">
+                        <div className="flex gap-2 items-center justify-center px-5 sm:px-8 py-6 rounded-md shadow-lg bg-gray-50">
+                            <h1 className="text-slate-700 text-[12px] sm:text-sm font-raleway font-semibold">You haven't created any short links yet.</h1>
+                            <FaLink className="text-violet-500 text-sm sm:text-md" />
+                        </div>
+                    </div>
+                )}
             </div>
 
             <ShortenUrlPopup
