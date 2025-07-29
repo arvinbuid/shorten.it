@@ -3,24 +3,36 @@ import type {AxiosResponse} from "axios";
 import api from "../api/api";
 
 // Shape of the raw data from the backend
-interface ApiResponseData {
+interface ApiResponseTotalClicks {
   [date: string]: number; // { "2025-08-01": 90 }
 }
-
 // Shape of the data after it is transformed by the select function of useQuery
 interface TransformedGraphData {
   clickDate: string;
   count: number;
 }
 
+interface ShortenedUrlItem {
+  id: number;
+  originalUrl: string;
+  shortUrl: string;
+  clickCount: number;
+  createdDate: string;
+  username: string;
+}
+
+type ApiResponseShortenUrl = ShortenedUrlItem[];
+
+export type TransformedShortenUrlData = ShortenedUrlItem[];
+
 export const useFetchTotalClicks = (token: string | null) => {
-  return useQuery<ApiResponseData, Error, TransformedGraphData[], string[]>({
+  return useQuery<ApiResponseTotalClicks, Error, TransformedGraphData[], string[]>({
     queryKey: ["totalClicks"],
     queryFn: async () => {
       if (!token) throw new Error("Token not found.");
 
       // api call
-      const response: AxiosResponse<ApiResponseData> = await api.get(
+      const response: AxiosResponse<ApiResponseTotalClicks> = await api.get(
         "/api/urls/totalClicks?startDate=2025-01-01&endDate=2025-12-31",
         {
           headers: {
@@ -32,7 +44,7 @@ export const useFetchTotalClicks = (token: string | null) => {
       );
       return response.data;
     },
-    select: (data: ApiResponseData) => {
+    select: (data: ApiResponseTotalClicks) => {
       const convertToArray: TransformedGraphData[] = Object.keys(data).map((key) => ({
         // before:
         // data =>
@@ -54,5 +66,37 @@ export const useFetchTotalClicks = (token: string | null) => {
       return convertToArray;
     }, // data transformation
     staleTime: 5000, // cache data for 5 seconds
+    enabled: !!token,
+  });
+};
+
+export const useFetchShortenUrls = (token: string | null) => {
+  return useQuery<ApiResponseShortenUrl, Error, TransformedShortenUrlData, string[]>({
+    queryKey: ["shortenUrls"],
+    queryFn: async () => {
+      if (!token) return [];
+      const response: AxiosResponse<ApiResponseShortenUrl> = await api.get("/api/urls/myurls", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      return response.data;
+    },
+    select: (data: ApiResponseShortenUrl) => {
+      if (!Array.isArray(data) || data.length === 0) {
+        return [];
+      }
+      // create shallow copy before sorting to avoid mutating the cached array directly
+      const sortedData = [...data].sort((a, b) => {
+        const dateA = new Date(a.createdDate);
+        const dateB = new Date(b.createdDate);
+        return dateB.getTime() - dateA.getTime(); // sort desc order
+      });
+      return sortedData;
+    },
+    staleTime: 5000,
+    enabled: !!token,
   });
 };

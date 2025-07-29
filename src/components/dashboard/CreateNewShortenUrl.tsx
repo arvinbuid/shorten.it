@@ -2,6 +2,8 @@ import { useState, type Dispatch, type SetStateAction } from "react";
 import { useJwt } from "../../context/useJwtContext";
 import { useForm, type FieldValues } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
+import type { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import type { TransformedShortenUrlData } from "../../hooks/useQuery";
 
 import TextField from "../TextField";
 import Tooltip from "@mui/material/Tooltip";
@@ -14,7 +16,7 @@ interface FormFields extends FieldValues {
 
 interface CreateNewShortenUrlProps {
     setOpen: Dispatch<SetStateAction<boolean>>
-    refetch: boolean
+    refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<TransformedShortenUrlData, Error>>
 }
 
 const CREATE_SHORTEN_URL = "/api/urls/shorten"

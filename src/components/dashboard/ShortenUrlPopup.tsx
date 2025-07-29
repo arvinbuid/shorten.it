@@ -1,4 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
+import type { TransformedShortenUrlData } from '../../hooks/useQuery';
 
 import Modal from '@mui/material/Modal';
 import CreateNewShortenUrl from './CreateNewShortenUrl';
@@ -6,7 +8,7 @@ import CreateNewShortenUrl from './CreateNewShortenUrl';
 interface ShortenUrlPopupProps {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
-    refetch: boolean
+    refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<TransformedShortenUrlData, Error>>
 }
 
 const ShortenUrlPopup = ({ open, setOpen, refetch }: ShortenUrlPopupProps) => {

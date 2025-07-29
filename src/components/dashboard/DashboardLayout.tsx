@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useJwt } from "../../context/useJwtContext";
-import { useFetchTotalClicks } from "../../hooks/useQuery";
+import { useFetchShortenUrls, useFetchTotalClicks } from "../../hooks/useQuery";
 import Graph from "./Graph";
 import ShortenUrlPopup from "./ShortenUrlPopup";
 
 const DashboardLayout = () => {
     const { token } = useJwt();
-    const { isLoading, data: totalClicks } = useFetchTotalClicks(token);
     const [shortenUrlPopup, setShortenUrlPopup] = useState(false);
-    const refetch = false;
+    const { isLoading, data: totalClicks } = useFetchTotalClicks(token);
+    const { isLoading: shortenUrlsLoading, data: shortenUrls, refetch } = useFetchShortenUrls(token);
 
     if (isLoading) {
         return (
