@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import type { ShortenedUrlItem } from "../../hooks/useQuery";
-import { FaExternalLinkAlt, } from "react-icons/fa";
+import { FaExternalLinkAlt, FaRegCalendarAlt, } from "react-icons/fa";
 import { MdOutlineAdsClick } from 'react-icons/md'
+
+import dayjs from "dayjs";
 
 interface ShortenItemProps {
     item: ShortenedUrlItem;
 }
 
 const ShortenItem = ({ item }: ShortenItemProps) => {
-    const { originalUrl, shortUrl, clickCount } = item;
+    const { originalUrl, shortUrl, clickCount, createdDate } = item;
     const subDomain = import.meta.env.VITE_REACT_SUBDOMAIN_URL.replace(/^https?:\/\//, "") // remove https://
 
     return (
@@ -44,7 +46,18 @@ const ShortenItem = ({ item }: ShortenItemProps) => {
                                 {clickCount === 0 || clickCount === 1 ? "Click" : "Clicks"}
                             </span>
                         </div>
+
+                        {/* Created Date */}
+                        <div className="flex items-center gap-2 font-raleway font-semibold text-sm sm:text-[16px] text-slate-800">
+                            <span>
+                                <FaRegCalendarAlt />
+                            </span>
+                            <span>
+                                {dayjs(createdDate).format("MMM DD, YYYY")}
+                            </span>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
