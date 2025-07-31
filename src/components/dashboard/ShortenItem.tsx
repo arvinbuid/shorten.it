@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ShortenedUrlItem } from "../../hooks/useQuery";
 import { FaExternalLinkAlt, FaRegCalendarAlt, } from "react-icons/fa";
-import { MdOutlineAdsClick } from 'react-icons/md'
+import { MdAnalytics, MdOutlineAdsClick } from 'react-icons/md'
 
 import dayjs from "dayjs";
 
@@ -12,6 +12,8 @@ interface ShortenItemProps {
 const ShortenItem = ({ item }: ShortenItemProps) => {
     const { originalUrl, shortUrl, clickCount, createdDate } = item;
     const subDomain = import.meta.env.VITE_REACT_SUBDOMAIN_URL.replace(/^https?:\/\//, "") // remove https://
+
+    const analyticsHandler = (shortUrl: string) => { }
 
     return (
         <div className={`bg-slate-100 shadow-lg border border-dotted border-slate-500 px-6 py-3 sm:py-1 rounded-md transition-all duration-100 `}>
@@ -57,7 +59,16 @@ const ShortenItem = ({ item }: ShortenItemProps) => {
                             </span>
                         </div>
                     </div>
-
+                </div>
+                <div className="flex flex-1 items-center sm:justify-end gap-4">
+                    {/* View Analytics */}
+                    <div
+                        onClick={() => analyticsHandler(shortUrl)}
+                        className="flex cursor-pointer gap-1 items-center bg-rose-700 py-2 font-semibold shadow-md shadow-slate-500 px-6 rounded-md text-white text-sm "
+                    >
+                        <button>Analytics</button>
+                        <MdAnalytics />
+                    </div>
                 </div>
             </div>
         </div>
