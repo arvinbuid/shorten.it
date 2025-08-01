@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { ShortenedUrlItem } from "../../hooks/useQuery";
 import { FaExternalLinkAlt, FaRegCalendarAlt, } from "react-icons/fa";
 import { MdAnalytics, MdOutlineAdsClick } from 'react-icons/md'
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useJwt } from "../../context/useJwtContext";
 
 import dayjs from "dayjs";
+import Graph from "./Graph";
+import api from "../../api/api";
 
 interface ShortenItemProps {
     item: ShortenedUrlItem;
@@ -13,8 +16,13 @@ interface ShortenItemProps {
 const ShortenItem = ({ item }: ShortenItemProps) => {
     const { originalUrl, shortUrl, clickCount, createdDate } = item;
     const subDomain = import.meta.env.VITE_REACT_SUBDOMAIN_URL.replace(/^https?:\/\//, "") // remove https://
+    const navigate = useNavigate();
+
     const [analyticToggle, setAnalyticToggle] = useState(false);
     const [selectedUrl, setSelectedUrl] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [analyticsData, setAnalyticsData] = useState([]);
+    const { token } = useJwt();
 
     const analyticsHandler = (shortUrl: string) => {
         if (!analyticToggle) {
@@ -22,6 +30,35 @@ const ShortenItem = ({ item }: ShortenItemProps) => {
         }
         setAnalyticToggle(!analyticToggle)
     }
+
+    const fetchShortUrl = useCallback(async () => {
+        setLoading(true);
+        try {
+            const { data } = await api.get(`/api/urls/analytics/${selectedUrl}?startDate=2025-01-01T00:00:00&endDate=2025-12-31T23:59:59`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            );
+            setAnalyticsData(data);
+            setSelectedUrl("");
+            console.log(data)
+        } catch (e) {
+            navigate("/error")
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }, [navigate, selectedUrl, token])
+
+    useEffect(() => {
+        if (selectedUrl) {
+            fetchShortUrl();
+        }
+    }, [selectedUrl, fetchShortUrl])
 
     return (
         <>
@@ -82,10 +119,27 @@ const ShortenItem = ({ item }: ShortenItemProps) => {
                 </div>
                 <React.Fragment>
                     <div className={`${analyticToggle ? "flex" : "hidden"} max-h-96 mt-4 sm:mt-0 relative min-h-96 border-slate-300 border-t w-full overflow-hidden`}>
-
+                        {loading ? (
+                            <>Loader Component here</>
+                        ) : (
+                            <>
+                                {analyticsData.length === 0 && (
+                                    <div className="absolute flex flex-col justify-center items-end sm:items-center w-full left-0 top-0 bottom-0 right-0 m-auto font-raleway">
+                                        <h1 className=" text-slate-800 sm:text-2xl text-[15px] font-bold mb-1">
+                                            No Data For This Time Period
+                                        </h1>
+                                        <h3 className="w-[90%] sm:w-96 sm:ml-0 pl-6 text-center sm:text-lg text-[12px] text-slate-600 ">
+                                            Share your short link to view where your engagements are
+                                            coming from
+                                        </h3>
+                                    </div>
+                                )}
+                                <Graph graphData={analyticsData} />
+                            </>
+                        )}
                     </div>
-                </React.Fragment>
-            </div>
+                </React.Fragment >
+            </div >
         </>
     );
 }
