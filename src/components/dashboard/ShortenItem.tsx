@@ -8,6 +8,7 @@ import { useJwt } from "../../context/useJwtContext";
 import dayjs from "dayjs";
 import Graph from "./Graph";
 import api from "../../api/api";
+import Loader from "../Loader";
 
 interface ShortenItemProps {
     item: ShortenedUrlItem;
@@ -120,7 +121,7 @@ const ShortenItem = ({ item }: ShortenItemProps) => {
                 <React.Fragment>
                     <div className={`${analyticToggle ? "flex" : "hidden"} max-h-96 mt-4 sm:mt-0 relative min-h-96 border-slate-300 border-t w-full overflow-hidden`}>
                         {loading ? (
-                            <>Loader Component here</>
+                            <Loader />
                         ) : (
                             <>
                                 {analyticsData.length === 0 && (
