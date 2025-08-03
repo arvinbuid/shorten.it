@@ -70,7 +70,7 @@ const ShortenItem = ({ item }: ShortenItemProps) => {
                             <Link
                                 target='_blank'
                                 className='text-[16px]  font-raleway font-[600] text-linkColor'
-                                to={import.meta.env.VITE_REACT_SUBDOMAIN_URL + "/s/" + `${shortUrl}`}
+                                to={`${import.meta.env.VITE_REACT_SUBDOMAIN_URL}/${shortUrl}`}
                             >
                                 {subDomain + "/" + `${shortUrl}`}
                             </Link>

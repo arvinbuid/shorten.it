@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import Navbar from "./components/Navbar";
@@ -12,7 +12,7 @@ import ShortenUrlPage from "./components/dashboard/ShortenUrlPage";
 
 const AppRouter = () => {
     return (
-        <Router>
+        <>
             <Navbar />
             <Toaster />
             <Routes>
@@ -23,7 +23,7 @@ const AppRouter = () => {
                 <Route path="/dashboard" element={<DashboardLayout />} />
             </Routes>
             <Footer />
-        </Router>
+        </>
     );
 }
 
