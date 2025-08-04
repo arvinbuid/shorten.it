@@ -9,6 +9,7 @@ import RegisterForm from "./components/RegisterForm";
 import Login from "./components/Login";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import ShortenUrlPage from "./components/dashboard/ShortenUrlPage";
+import PrivateRoute from "./components/PrivateRoute";
 
 const AppRouter = () => {
     return (
@@ -18,9 +19,9 @@ const AppRouter = () => {
             <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/register" element={<RegisterForm />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<DashboardLayout />} />
+                <Route path="/register" element={<PrivateRoute publicPage={true}><RegisterForm /></PrivateRoute>} />
+                <Route path="/login" element={<PrivateRoute publicPage={true}><Login /></PrivateRoute>} />
+                <Route path="/dashboard" element={<PrivateRoute publicPage={false}><DashboardLayout /></PrivateRoute>} />
             </Routes>
             <Footer />
         </>
