@@ -10,6 +10,8 @@ import Login from "./components/Login";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import ShortenUrlPage from "./components/dashboard/ShortenUrlPage";
 import PrivateRoute from "./components/PrivateRoute";
+import NotFound from "./components/NotFound";
+import Error from "./components/Error";
 
 const AppRouter = () => {
     return (
@@ -22,6 +24,8 @@ const AppRouter = () => {
                 <Route path="/register" element={<PrivateRoute publicPage={true}><RegisterForm /></PrivateRoute>} />
                 <Route path="/login" element={<PrivateRoute publicPage={true}><Login /></PrivateRoute>} />
                 <Route path="/dashboard" element={<PrivateRoute publicPage={false}><DashboardLayout /></PrivateRoute>} />
+                <Route path="/error" element={<Error />} />
+                <Route path="/*" element={<NotFound message="We can't seem to find the page that you're looking for." />} />
             </Routes>
             <Footer />
         </>
