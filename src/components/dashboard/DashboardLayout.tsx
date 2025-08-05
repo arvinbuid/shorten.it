@@ -5,6 +5,7 @@ import { FaLink } from "react-icons/fa";
 import Graph from "./Graph";
 import ShortenUrlPopup from "./ShortenUrlPopup";
 import ShortenUrlLinks from "./ShortenUrlLinks";
+import Loader from "../Loader";
 
 const DashboardLayout = () => {
     const { token } = useJwt();
@@ -15,7 +16,7 @@ const DashboardLayout = () => {
     if (isLoading || shortenUrlsLoading) {
         return (
             <div className="min-h-[calc(100vh-64px)] flex items-center justify-center">
-                <p>Loading graph data...</p>
+                <Loader />
             </div>
         );
     }
