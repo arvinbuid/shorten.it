@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useJwt } from "../context/useJwtContext";
 
 const Navbar = () => {
-    const [navbarOpen, setNavbarOpen] = useState(false);
+    const navigate = useNavigate();
     const path = useLocation().pathname;
+    const [navbarOpen, setNavbarOpen] = useState(false);
+    const { token, setToken } = useJwt();
+
+    const handleLogout = () => {
+        setToken(null);
+        localStorage.removeItem("JWT_TOKEN");
+        navigate("/login");
+    }
+
     return (
         <div className="h-16 bg-custom-gradient  z-50 flex items-center sticky top-0 ">
             <div className="lg:px-14 sm:px-8 px-4 w-full flex justify-between">
@@ -33,11 +43,31 @@ const Navbar = () => {
                             About
                         </Link>
                     </li>
-                    <Link to="/register">
-                        <li className="-ml-1 sm:ml-0  bg-rose-700 text-white w-22 text-center font-semibold px-2 py-2 rounded-md  hover:text-slate-300 transition-all duration-150 tracking-wide text-md">
-                            Signup
+                    {token && (
+                        <li className="font-[500] transition-all duration-150">
+                            <Link
+                                className={`${path === "/about" ? "text-white font-semibold" : "text-gray-200"}`}
+                                to="/dashboard"
+                            >
+                                Dashboard
+                            </Link>
                         </li>
-                    </Link>
+                    )}
+                    {!token && (
+                        <Link to="/register">
+                            <li className="-ml-1 bg-rose-700 text-white w-22 text-center uppercase px-2 py-2 rounded-md  hover:text-slate-300 transition-all duration-150 tracking-wide text-md">
+                                Signup
+                            </li>
+                        </Link>
+                    )}
+                    {token && (
+                        <button
+                            onClick={handleLogout}
+                            className="ml-0 sm:-ml-2 bg-rose-700 text-white w-22 text-center uppercase px-2 py-2 rounded-md  hover:text-slate-300 transition-all duration-150 tracking-tight text-[14px]"
+                        >
+                            Logout
+                        </button>
+                    )}
                 </ul>
                 <button
                     onClick={() => setNavbarOpen(!navbarOpen)}
