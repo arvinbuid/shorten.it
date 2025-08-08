@@ -1,14 +1,23 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import { useJwt } from "../../context/useJwtContext";
 import { useForm, type FieldValues } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
-import type { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import type { TransformedShortenUrlData } from "../../hooks/useQuery";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { ShortenedUrlItem } from "../../hooks/useQuery";
 
 import TextField from "../TextField";
 import Tooltip from "@mui/material/Tooltip";
 import api from "../../api/api";
 import toast from "react-hot-toast";
+
+interface CreateShortenUrlResponse {
+    id: number;
+    originalUrl: string;
+    shortUrl: string;
+    clickCount: number;
+    createdDate: string;
+    username: string;
+}
 
 interface FormFields extends FieldValues {
     originalUrl: string;
@@ -16,7 +25,7 @@ interface FormFields extends FieldValues {
 
 interface CreateNewShortenUrlProps {
     setOpen: Dispatch<SetStateAction<boolean>>
-    refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<TransformedShortenUrlData, Error>>
+
 }
 
 const CREATE_SHORTEN_URL = "/api/urls/shorten"
@@ -24,8 +33,9 @@ const SUBDOMAIN_URL = import.meta.env.VITE_REACT_SUBDOMAIN_URL
 
 const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
     const { token } = useJwt();
-    const [loading, setLoading] = useState(false);
+    const queryClient = useQueryClient();
 
+    // React Hook Form
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormFields>({
         defaultValues: {
             originalUrl: ""
@@ -33,32 +43,68 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
         mode: "onTouched"
     });
 
-    const createShortenUrlHandler = async (data: FormFields) => {
-        try {
-            setLoading(true);
-            const { data: res } = await api.post(CREATE_SHORTEN_URL, data, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    Authorization: "Bearer " + token,
-                },
-            });
+    // Mutation function
+    const createShortenUrl = async (data: { originalUrl: string }): Promise<CreateShortenUrlResponse> => {
+        const { data: res } = await api.post(CREATE_SHORTEN_URL, data, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: "Bearer " + token,
+            },
+        });
+        return res;
+    }
 
-            const shortenUrl = `${SUBDOMAIN_URL}/${res.shortUrl}`;
-            navigator.clipboard.writeText(shortenUrl).then(() => {
-                toast.success("Short url copied to clipboard!", {
-                    duration: 2000
-                });
+    // useMutation hook
+    const mutation = useMutation<CreateShortenUrlResponse, Error, FormFields, { previousUrls: ShortenedUrlItem[] | undefined }>({
+        mutationFn: createShortenUrl,
+        onMutate: async (newUrl) => {
+            await queryClient.cancelQueries({ queryKey: ["shortenUrls"] });
+            const previousUrls = queryClient.getQueryData<ShortenedUrlItem[]>(["shortenUrls"]); // Snapshot of previous url data
+
+            // Create optimistic url
+            const optimisticShortenUrl = {
+                id: Math.floor(Math.random() * -1000000), // Using a negative ID to avoid conflicts
+                originalUrl: newUrl.originalUrl,
+                shortUrl: 'creating...',
+                clickCount: 0,
+                createdDate: new Date().toISOString(),
+                username: '' // TODO
+            }
+
+            queryClient.setQueryData<ShortenedUrlItem[]>(['shortenUrls'], (old) => {
+                return old ? [optimisticShortenUrl, ...old] : [optimisticShortenUrl];
             })
 
-            reset();
-            setOpen(false);
-        } catch (e) {
+            // Return context object with optimistic url
+            return { previousUrls }
+        },
+        onSuccess: (data) => {
+            toast.success("Short url copied to clipboard!", {
+                duration: 2000
+            });
+            queryClient.invalidateQueries({ queryKey: ["shortenUrls"] });
+            const shortenUrl = `${SUBDOMAIN_URL}/${data.shortUrl}`
+            navigator.clipboard.writeText(shortenUrl);
+        },
+        onError: (error, context) => {
             toast.error("Error creating short url.");
-        } finally {
-            setLoading(false);
-        }
+            queryClient.setQueryData(['shortenUrls'], context?.previousUrls);
+
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["shortenUrls"] });
+            setOpen(false);
+            reset();
+        },
+        retry: 3,
+    })
+
+    const createShortenUrlHandler = (data: FormFields) => {
+        mutation.mutate(data);
     }
+
+    const isLoading = mutation.isPending;
 
     return (
         <div className="flex justify-center items-center bg-white rounded-md">
@@ -84,17 +130,17 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
                 </div>
 
                 <button
-                    disabled={loading}
+                    disabled={isLoading}
                     type="submit"
                     className="text-white bg-custom-gradient w-full py-3 rounded-md mt-6 mb-3 text-sm"
                 >
-                    {loading ? "Creating..." : "Create"}
+                    {isLoading ? "Creating..." : "Create"}
                 </button>
 
                 {/* Close Modal Button */}
                 <Tooltip title="Close">
                     <button
-                        disabled={loading}
+                        disabled={isLoading}
                         onClick={() => setOpen(false)}
                         className="absolute top-3 right-4"
                     >

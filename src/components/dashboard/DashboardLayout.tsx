@@ -11,7 +11,7 @@ const DashboardLayout = () => {
     const { token } = useJwt();
     const [shortenUrlPopup, setShortenUrlPopup] = useState(false);
     const { isLoading, data: totalClicks } = useFetchTotalClicks(token);
-    const { isLoading: shortenUrlsLoading, data: shortenUrls, refetch } = useFetchShortenUrls(token);
+    const { isLoading: shortenUrlsLoading, data: shortenUrls } = useFetchShortenUrls(token);
 
     if (isLoading || shortenUrlsLoading) {
         return (
@@ -70,7 +70,6 @@ const DashboardLayout = () => {
             <ShortenUrlPopup
                 open={shortenUrlPopup}
                 setOpen={setShortenUrlPopup}
-                refetch={refetch}
             />
         </div>
     );
