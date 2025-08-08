@@ -29,11 +29,10 @@ const RegisterForm = () => {
     const registerHandler = async (data: RegisterFormFields) => {
         try {
             setLoading(true);
-            const { data: response } = await api.post(REGISTER_URL, data);
+            await api.post(REGISTER_URL, data);
             reset();
             navigate("/login");
             toast.success("Registration successful!");
-            console.log(response)
         } catch (e) {
             console.error(e);
             toast.error("Error registering user.");

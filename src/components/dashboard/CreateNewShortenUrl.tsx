@@ -44,7 +44,6 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
                 },
             });
 
-
             const shortenUrl = `${SUBDOMAIN_URL}/${res.shortUrl}`;
             navigator.clipboard.writeText(shortenUrl).then(() => {
                 toast.success("Short url copied to clipboard!", {
@@ -52,12 +51,9 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
                 });
             })
 
-            console.log(shortenUrl);
-
             reset();
             setOpen(false);
         } catch (e) {
-            console.log(e);
             toast.error("Error creating short url.");
         } finally {
             setLoading(false);

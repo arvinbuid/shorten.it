@@ -46,7 +46,6 @@ const ShortenItem = ({ item }: ShortenItemProps) => {
             );
             setAnalyticsData(data);
             setSelectedUrl("");
-            console.log(data)
         } catch (e) {
             navigate("/error")
             console.error(e);
