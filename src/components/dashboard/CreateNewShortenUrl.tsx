@@ -32,7 +32,7 @@ const CREATE_SHORTEN_URL = "/api/urls/shorten"
 const SUBDOMAIN_URL = import.meta.env.VITE_REACT_SUBDOMAIN_URL
 
 const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
-    const { token } = useJwt();
+    const { token, user } = useJwt();
     const queryClient = useQueryClient();
 
     // React Hook Form
@@ -62,6 +62,11 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
             await queryClient.cancelQueries({ queryKey: ["shortenUrls"] });
             const previousUrls = queryClient.getQueryData<ShortenedUrlItem[]>(["shortenUrls"]); // Snapshot of previous url data
 
+            // Check if user is authenticated
+            if (!user) {
+                throw new Error("User not authenticated");
+            }
+
             // Create optimistic url
             const optimisticShortenUrl = {
                 id: Math.floor(Math.random() * -1000000), // Using a negative ID to avoid conflicts
@@ -69,7 +74,7 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
                 shortUrl: 'creating...',
                 clickCount: 0,
                 createdDate: new Date().toISOString(),
-                username: '' // TODO
+                username: user.sub
             }
 
             queryClient.setQueryData<ShortenedUrlItem[]>(['shortenUrls'], (old) => {
@@ -87,7 +92,7 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
             const shortenUrl = `${SUBDOMAIN_URL}/${data.shortUrl}`
             navigator.clipboard.writeText(shortenUrl);
         },
-        onError: (error, context) => {
+        onError: (_, context) => {
             toast.error("Error creating short url.");
             queryClient.setQueryData(['shortenUrls'], context?.previousUrls);
 
