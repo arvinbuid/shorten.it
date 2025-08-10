@@ -54,9 +54,9 @@ const Navbar = () => {
                         </li>
                     )}
                     {!token && (
-                        <Link to="/register">
+                        <Link to="/login">
                             <li className="-ml-1 bg-rose-700 text-white w-22 text-center uppercase px-2 py-2 rounded-md  hover:text-slate-300 transition-all duration-150 tracking-wide text-md">
-                                Signup
+                                Login
                             </li>
                         </Link>
                     )}
