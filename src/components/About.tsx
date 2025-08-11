@@ -13,7 +13,7 @@ const About = () => {
                 </p>
                 <div className="space-y-8 w-full sm:w-[80%] lg:w-[70%] xl:w-[60%]">
                     <div className="flex items-start">
-                        <FaLink className="text-blue-500 text-3xl mr-4" />
+                        <FaLink className="text-blue-500 text-6xl md:text-3xl mr-4" />
                         <div>
                             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-1">
                                 Simple URL Shortening
@@ -25,7 +25,7 @@ const About = () => {
                         </div>
                     </div>
                     <div className="flex items-start">
-                        <FaShareAlt className="text-green-500 text-3xl mr-4" />
+                        <FaShareAlt className="text-green-500 text-6xl md:text-3xl mr-4" />
                         <div>
                             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-1">
                                 Powerful Analytics
@@ -38,7 +38,7 @@ const About = () => {
                         </div>
                     </div>
                     <div className="flex items-start">
-                        <FaEdit className="text-purple-500 text-3xl mr-4" />
+                        <FaEdit className="text-purple-500 text-6xl md:text-3xl mr-4" />
                         <div>
                             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-1">
                                 Enhanced Security
@@ -51,7 +51,7 @@ const About = () => {
                         </div>
                     </div>
                     <div className="flex items-start">
-                        <FaChartLine className="text-red-500 text-3xl mr-4" />
+                        <FaChartLine className="text-red-500 text-6xl md:text-3xl mr-4" />
                         <div>
                             <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-1">
                                 Fast and Reliable
