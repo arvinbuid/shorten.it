@@ -14,6 +14,7 @@ const Navbar = () => {
         setToken(null);
         localStorage.removeItem("JWT_TOKEN");
         navigate("/login");
+        setNavbarOpen(false);
     }
 
     return (
@@ -31,6 +32,7 @@ const Navbar = () => {
                         <Link
                             className={`${path === "/" ? "text-white font-semibold" : "text-gray-200"}`}
                             to="/"
+                            onClick={() => setNavbarOpen(false)}
                         >
                             Home
                         </Link>
@@ -39,6 +41,7 @@ const Navbar = () => {
                         <Link
                             className={`${path === "/about" ? "text-white font-semibold" : "text-gray-200"}`}
                             to="/about"
+                            onClick={() => setNavbarOpen(false)}
                         >
                             About
                         </Link>
@@ -48,6 +51,7 @@ const Navbar = () => {
                             <Link
                                 className={`${path === "/about" ? "text-white font-semibold" : "text-gray-200"}`}
                                 to="/dashboard"
+                                onClick={() => setNavbarOpen(false)}
                             >
                                 Dashboard
                             </Link>
@@ -55,7 +59,9 @@ const Navbar = () => {
                     )}
                     {!token && (
                         <Link to="/login">
-                            <li className="-ml-1 bg-rose-700 text-white w-22 text-center uppercase px-2 py-2 rounded-md  hover:text-slate-300 transition-all duration-150 tracking-wide text-md">
+                            <li className="-ml-1 bg-rose-700 text-white w-22 text-center uppercase px-2 py-2 rounded-md  hover:text-slate-300 transition-all duration-150 tracking-wide text-md"
+                                onClick={() => setNavbarOpen(false)}
+                            >
                                 Login
                             </li>
                         </Link>
@@ -70,7 +76,10 @@ const Navbar = () => {
                     )}
                 </ul>
                 <button
-                    onClick={() => setNavbarOpen(!navbarOpen)}
+                    onClick={() => {
+                        setNavbarOpen(!navbarOpen)
+
+                    }}
                     className="sm:hidden flex items-center sm:mt-0 mt-2"
                 >
                     {navbarOpen ? (
