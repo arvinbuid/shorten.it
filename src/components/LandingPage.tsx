@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Card from "./Card";
 
 const cardsData = [
@@ -22,7 +23,7 @@ const cardsData = [
 const LandingPage = () => {
     return (
         <div className="min-h-[calc(100vh-64px)] max-w-[calc(100vw-32px)] px-4 sm:px-8 lg:px-14 mx-auto">
-            <div className="flex-col lg:flex-row py-0 lg:py-5 pt-4 md:pt-16 gap-8 lg:gap-10 flex justify-between items-center mt-12 mb-24">
+            <div className="flex-col lg:flex-row py-0 lg:py-5 pt-4 md:pt-16 gap-6 lg:gap-8 flex justify-between items-center mt-12 mb-8">
                 <div className="flex-none w-full lg:flex-1 ml-0 xl:ml-12">
                     <h1 className="font-bold text-slate-800 text-3xl sm:text:4xl md:text-5xl leading sm:leading-[40px] md:leading-[55px] md:w-3/4 lg:w-full">
                         Shorten.it simplifies url shortening for efficient link sharing.
@@ -34,8 +35,11 @@ const LandingPage = () => {
                         seconds. Simplify your sharing experience with Shorten.it today.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-3 md:pt-0">
-                        <button className="w-full sm:w-40 text-navbarColor rounded-md bg-custom-gradient py-2">Manage Links</button>
-                        <button className="w-full sm:w-40 border border-btnColor text-btnColor rounded-md py-2">Create Short Link</button>
+                        <button className="w-full sm:w-40 text-navbarColor rounded-md bg-custom-gradient py-2">
+                            <Link to='/dashboard'>Manage Links</Link></button>
+                        <button className="w-full sm:w-40 border border-btnColor text-btnColor rounded-md py-2">
+                            <Link to='/dashboard'>Create Short Link</Link>
+                        </button>
                     </div>
                 </div>
                 {/* Landing Page Image */}
@@ -48,12 +52,12 @@ const LandingPage = () => {
                 </div>
             </div>
 
-            <div className="pt-7 sm:pt-12 max-w-[1400px] mx-auto">
-                <p className="text-slate-800 font-roboto font-bold w-full sm:w-[80%] md:w-[70%] lg:w-[60%] mx-auto text-2xl sm:text-3xl text-center">
+            <div className="pt-6 sm:pt-8 max-w-[1400px] mx-auto">
+                <p className="text-slate-800 font-roboto font-bold w-full sm:w-[80%] md:w-[70%] lg:w-[60%] mx-auto text-2xl sm:text-4xl text-center">
                     Trusted by individuals and teams at the world best companies{" "}
                 </p>
                 {/* Cards */}
-                <div className="pt-2 pb-7 grid gap-4 lg:gap-7 xl:grid-cols-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-10">
+                <div className="pt-2 pb-7 grid gap-4 lg:gap-7 xl:grid-cols-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-14">
                     {cardsData.map((card, index) => (
                         <Card key={index} title={card.title} description={card.description} />
                     ))}

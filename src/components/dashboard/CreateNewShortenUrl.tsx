@@ -118,7 +118,7 @@ const CreateNewShortenUrl = ({ setOpen }: CreateNewShortenUrlProps) => {
                 className="w-[360px] sm:w-[450px] relative shadow-custom pt-8 pb-6 px-4 sm:px-8 rounded-lg"
             >
                 <h1 className="font-raleway mt-3 sm:mt-0 text-center sm:text-2xl font-bold text-[22px] text-slate-800 ">
-                    Create New Shorten Url
+                    Create New Short Url
                 </h1>
 
                 <div className="mt-6">

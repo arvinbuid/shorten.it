@@ -2,7 +2,7 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 const Footer = () => {
     const date = new Date().getFullYear();
     return (
-        <footer className="bg-custom-gradient p-8 relative mt-4 w-full">
+        <footer className="bg-custom-gradient py-4 px-2 md:py-6 md:px-3 relative mt-10 md:mt-12 w-full">
             <div className="container flex flex-col lg:flex-row lg:justify-between items-center gap-4 mx-auto px-6 lg:px-4 text-zinc-100">
                 <p className="mt-4 lg:mt-0 text-sm">
                     &copy; {date} Shorten.it. All rights reserved.
@@ -22,7 +22,6 @@ const Footer = () => {
                     </a>
                 </div>
             </div>
-
         </footer>
     );
 }
