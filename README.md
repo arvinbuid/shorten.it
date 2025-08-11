@@ -28,7 +28,7 @@ A fullstack url shortener web application built using Java Spring Boot and React
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/arvinbuid/shorten.it-frontend.git
+git clone https://github.com/arvinbuid/shorten.it.git
 ```
 
 ### Install Dependencies
